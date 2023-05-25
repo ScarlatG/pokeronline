@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.prova.pokeronline.dto.SvuotaTavoliDTO;
 import it.prova.pokeronline.dto.TavoloDTO;
 import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.Ruolo;
@@ -160,6 +161,16 @@ public class TavoloController {
 	@GetMapping("/admin/trovaTavoloConMassimaEsperienzaGiocatori")
 	public TavoloDTO trovaTavoloConMassimaEsperienzaGiocatori() {
 		return tavoloService.trovaTavoloConEsperienzaMassima();
+	}
+
+	// MEV 4
+	@PostMapping("/admin/svuotaTavoli")
+	public String svuotaTavoli(@RequestBody List<SvuotaTavoliDTO> tavoli) {
+
+		tavoloService.svotaUtenti(tavoli);
+
+		return "fatto";
+
 	}
 
 }

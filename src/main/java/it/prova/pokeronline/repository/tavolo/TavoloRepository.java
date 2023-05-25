@@ -3,6 +3,7 @@ package it.prova.pokeronline.repository.tavolo;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -39,5 +40,10 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long> {
 			+ "	JOIN utente AS u ON tg.giocatori_id = u.id " + "	GROUP BY t.id "
 			+ "	ORDER BY SUM(u.esperienzaaccumulata) DESC " + "	LIMIT 1", nativeQuery = true)
 	Tavolo trovaTavoloConMassimaEsperienzaGiocatori();
+
+	@Modifying
+	@Query(value = "delete g.* from tavolo_giocatori g inner join tavolo t on t.id = g.Tavolo_id inner join utente u on u.id = g.giocatori_id\r\n"
+			+ "where g.Tavolo_id in (select u.id from utente u where u.username in :listaUsername);", nativeQuery = true)
+	public void svuotaTavoliCreatiDaUtenti(List<String> listaUsername);
 
 }
