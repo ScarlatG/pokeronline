@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import it.prova.pokeronline.model.Tavolo;
+import it.prova.pokeronline.model.Utente;
 
 public interface TavoloRepository extends CrudRepository<Tavolo, Long> {
 
@@ -45,5 +46,10 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long> {
 	@Query(value = "delete g.* from tavolo_giocatori g inner join tavolo t on t.id = g.Tavolo_id inner join utente u on u.id = g.giocatori_id\r\n"
 			+ "where g.Tavolo_id in (select u.id from utente u where u.username in :listaUsername);", nativeQuery = true)
 	public void svuotaTavoliCreatiDaUtenti(List<String> listaUsername);
+
+	@Query(value = "SELECT distinct u.*\r\n" + "	FROM utente u\r\n"
+			+ "	inner JOIN tavolo t ON u.id = t.utente_id\r\n"
+			+ "	WHERE t.datacreazione < u.dataregistrazione", nativeQuery = true)
+	List<Utente> listaUtentiDateSbagliate();
 
 }
