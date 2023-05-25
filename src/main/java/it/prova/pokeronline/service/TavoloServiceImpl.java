@@ -115,4 +115,9 @@ public class TavoloServiceImpl implements TavoloService {
 				repository.estraiTavoliConAlmenoUnUtenteAlDiSopraDiSoglia(utenteInSessione.getId(), soglia), true);
 	}
 
+	@Override
+	public TavoloDTO trovaTavoloConEsperienzaMassima() {
+		return TavoloDTO.buildTavoloDTOFromModel(repository.trovaTavoloConMassimaEsperienzaGiocatori(), true);
+	}
+
 }

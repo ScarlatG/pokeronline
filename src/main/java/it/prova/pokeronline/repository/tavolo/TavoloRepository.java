@@ -35,4 +35,9 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long> {
 	List<Tavolo> estraiTavoliConAlmenoUnUtenteAlDiSopraDiSoglia(@Param("idInSessione") Long idInSessione,
 			@Param("soglia") Integer soglia);
 
+	@Query(value = "SELECT t.* " + "	FROM tavolo AS t " + "	JOIN tavolo_giocatori AS tg ON t.id = tg.tavolo_id "
+			+ "	JOIN utente AS u ON tg.giocatori_id = u.id " + "	GROUP BY t.id "
+			+ "	ORDER BY SUM(u.esperienzaaccumulata) DESC " + "	LIMIT 1", nativeQuery = true)
+	Tavolo trovaTavoloConMassimaEsperienzaGiocatori();
+
 }

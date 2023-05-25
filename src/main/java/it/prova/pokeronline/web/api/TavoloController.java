@@ -144,6 +144,7 @@ public class TavoloController {
 		tavoloService.rimuovi(id);
 	}
 
+	// MEV 1
 	@GetMapping("/specialGuest/listaTavoliConGiocatoreConSogliaEsperienza")
 	public List<TavoloDTO> listaTavoliConGiocatoreConSogliaEsperienza(
 			@Valid @RequestBody Map<String, Integer> rawValue) {
@@ -153,6 +154,12 @@ public class TavoloController {
 
 		return tavoloService.listaTavoliConSogliaEsperienzaGiocatore(rawValue.get("sogliaMinima"));
 
+	}
+
+	// MEV 2
+	@GetMapping("/admin/trovaTavoloConMassimaEsperienzaGiocatori")
+	public TavoloDTO trovaTavoloConMassimaEsperienzaGiocatori() {
+		return tavoloService.trovaTavoloConEsperienzaMassima();
 	}
 
 }

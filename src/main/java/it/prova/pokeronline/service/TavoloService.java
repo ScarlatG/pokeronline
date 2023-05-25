@@ -36,4 +36,6 @@ public interface TavoloService {
 
 	public List<TavoloDTO> listaTavoliConSogliaEsperienzaGiocatore(Integer soglia);
 
+	public TavoloDTO trovaTavoloConEsperienzaMassima();
+
 }
