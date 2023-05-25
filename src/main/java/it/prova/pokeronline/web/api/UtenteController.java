@@ -29,10 +29,10 @@ import it.prova.pokeronline.web.api.exception.UtenteNotFoundException;
 @RestController
 @RequestMapping("/api/utente")
 public class UtenteController {
-	
+
 	@Autowired
 	private UtenteService utenteService;
-	
+
 	@GetMapping(value = "/userInfo")
 	public ResponseEntity<UtenteInfoJWTResponseDTO> getUserInfo() {
 
@@ -48,30 +48,30 @@ public class UtenteController {
 		return ResponseEntity.ok(new UtenteInfoJWTResponseDTO(utenteLoggato.getNome(), utenteLoggato.getCognome(),
 				utenteLoggato.getUsername(), ruoli));
 	}
-	
+
 	@PostMapping
 	public UtenteDTO createUtente(@Valid @RequestBody UtenteDTO utenteInput) {
 
 		if (utenteInput.getId() != null)
 			throw new IdNotNullForInsertException("Non è ammesso fornire un id per la creazione");
-		
+
 		Utente utente = utenteInput.buildUtenteModel(true);
 		utenteService.inserisciNuovo(utente);
 
 		return UtenteDTO.buildUtenteDTOFromModel(utente);
 	}
-	
+
 	@GetMapping("/{id}")
 	public UtenteDTO findById(@PathVariable(value = "id", required = true) Long idUtente) {
-		
+
 		return UtenteDTO.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(idUtente));
 	}
-	
+
 	@PostMapping("/search")
 	public List<UtenteDTO> search(@RequestBody UtenteDTO example) {
 		return UtenteDTO.buildUtenteDTOListFromModelList(utenteService.findByExample(example.buildUtenteModel(true)));
 	}
-	
+
 	@PutMapping("/{id}")
 	public UtenteDTO update(@Valid @RequestBody UtenteDTO utenteInput, @PathVariable(required = true) Long id) {
 		Utente utente = utenteService.caricaSingoloUtente(id);
@@ -83,7 +83,7 @@ public class UtenteController {
 		Utente utenteAggiornato = utenteService.aggiorna(utenteInput.buildUtenteModel(true));
 		return UtenteDTO.buildUtenteDTOFromModel(utenteAggiornato);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable(required = true) Long id) {
@@ -92,6 +92,14 @@ public class UtenteController {
 		if (utente == null)
 			throw new UtenteNotFoundException("Utente not found con id: " + id);
 		utenteService.rimuovi(utente);
+	}
+
+	// MEV 3
+	@GetMapping("admin/listaUtentiDateSbagliate")
+	public List<UtenteDTO> listaUtentiDateSbagliate() {
+
+		List<Utente> utentiDateSbagliate = utenteService.listaUtentiDateSbagliate();
+		return UtenteDTO.createUtenteDTOListFromModelList(utentiDateSbagliate);
 	}
 
 }

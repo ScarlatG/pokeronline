@@ -1,5 +1,6 @@
 package it.prova.pokeronline.repository.utente;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -10,7 +11,6 @@ import it.prova.pokeronline.model.StatoUtente;
 import it.prova.pokeronline.model.Utente;
 
 public interface UtenteRepository extends CrudRepository<Utente, Long> {
-	
 
 	@EntityGraph(attributePaths = { "ruoli" })
 	Optional<Utente> findByUsername(String username);
@@ -23,6 +23,11 @@ public interface UtenteRepository extends CrudRepository<Utente, Long> {
 	@EntityGraph(attributePaths = { "ruoli" })
 	Utente findByUsernameAndPasswordAndStato(String username, String password, StatoUtente stato);
 
-	@Query(value= "update Utente set creditoaccumulato += ?1 where id = ?2", nativeQuery = true)
+	@Query(value = "update Utente set creditoaccumulato += ?1 where id = ?2", nativeQuery = true)
 	Integer compraCredito(Integer credito, Long id);
+
+	@Query(value = "SELECT distinct u.*\r\n" + "	FROM utente u\r\n"
+			+ "	inner JOIN tavolo t ON u.id = t.utente_id\r\n"
+			+ "	WHERE t.datacreazione < u.dataregistrazione", nativeQuery = true)
+	List<Utente> listaUtentiDateSbagliate();
 }

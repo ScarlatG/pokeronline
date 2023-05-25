@@ -116,4 +116,9 @@ public class UtenteServiceImpl implements UtenteService {
 
 	}
 
+	@Override
+	public List<Utente> listaUtentiDateSbagliate() {
+		return repository.listaUtentiDateSbagliate();
+	}
+
 }

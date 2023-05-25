@@ -5,9 +5,9 @@ import java.util.List;
 import it.prova.pokeronline.model.Utente;
 
 public interface UtenteService {
-	
-	//CRUD
-	
+
+	// CRUD
+
 	public List<Utente> listAllUtenti();
 
 	public Utente caricaSingoloUtente(Long id);
@@ -19,8 +19,8 @@ public interface UtenteService {
 	public void inserisciNuovo(Utente utenteInstance);
 
 	public void rimuovi(Utente utenteInstance);
-	
-	//FIND
+
+	// FIND
 
 	public List<Utente> findByExample(Utente example);
 
@@ -32,5 +32,6 @@ public interface UtenteService {
 
 	public void playGame(Utente utenteLoggato);
 
+	List<Utente> listaUtentiDateSbagliate();
 
 }

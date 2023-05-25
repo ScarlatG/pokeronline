@@ -198,4 +198,8 @@ public class UtenteDTO {
 				.collect(Collectors.toSet());
 	}
 
+	public static List<UtenteDTO> createUtenteDTOListFromModelList(List<Utente> utentiDateSbagliate) {
+		return utentiDateSbagliate.stream().map(UtenteDTO::buildUtenteDTOFromModel).collect(Collectors.toList());
+	}
+
 }
