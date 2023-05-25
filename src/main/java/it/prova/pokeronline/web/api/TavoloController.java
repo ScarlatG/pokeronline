@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 
 import it.prova.pokeronline.dto.TavoloDTO;
 import it.prova.pokeronline.dto.UtenteDTO;
@@ -32,6 +32,12 @@ import it.prova.pokeronline.web.api.exception.UtenteCreazioneNotValidException;
 @RestController
 @RequestMapping("/api/tavolo")
 public class TavoloController {
+
+	/*
+	 * Classico CRUD (possono farlo sia ADMIN che SPECIAL_PLAYER ma quest’ultimo ha
+	 * visibilità solo su quelli dove è lui l’utenteCreazione). Non si può
+	 * cancellare né modificare finché ci sono giocatori a quel Tavolo.
+	 */
 
 	@Autowired
 	private TavoloService tavoloService;

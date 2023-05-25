@@ -1,10 +1,5 @@
 package it.prova.pokeronline.web.api;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.prova.pokeronline.dto.TavoloDTO;
+import it.prova.pokeronline.dto.UtenteDTO;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.service.TavoloService;
@@ -24,6 +20,12 @@ import it.prova.pokeronline.web.api.exception.UtenteNotEnoughCreditoException;
 import it.prova.pokeronline.web.api.exception.UtenteNotEnoughExperienceException;
 import it.prova.pokeronline.web.api.exception.UtenteNotInGameException;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 @RestController
 @RequestMapping("/api/play")
 public class PlayController {
@@ -33,6 +35,12 @@ public class PlayController {
 
 	@Autowired
 	private TavoloService tavoloService;
+
+	/*
+	 * COMPRA CREDITO (ti invio di quanto aumentare il mio credito... lasciamo stare
+	 * le considerazioni che emergono sul fatto che ci vorrebbe un payment provider
+	 * tipo Paypal).
+	 */
 
 	@PostMapping("/buy/{credito}")
 	@ResponseStatus(HttpStatus.OK)
@@ -45,6 +53,10 @@ public class PlayController {
 		utenteLoggato = utenteService.aggiorna(utenteLoggato);
 	}
 
+	/*
+	 * DAMMI IL LAST GAME (restituisce un valore solo se io sono ancora nel set di
+	 * qualche tavolo).
+	 */
 	@GetMapping("/lastgame")
 	@ResponseStatus(HttpStatus.OK)
 	public TavoloDTO lastGame() {
@@ -55,6 +67,12 @@ public class PlayController {
 			return null;
 		return TavoloDTO.buildTavoloDTOFromModelNoPassword(lastGameTavolo, false);
 	}
+
+	/*
+	 * ABBANDONA PARTITA (il sistema fa il ++ di esperienza. Qui si individua
+	 * immediatamente un bug cioè qualcuno per accumulare esperienza potrebbe
+	 * entrare e uscire n volte senza giocare. Ma a noi non importa...).
+	 */
 
 	@GetMapping("/leavegame")
 	@ResponseStatus(HttpStatus.OK)
@@ -75,6 +93,10 @@ public class PlayController {
 		utenteService.aggiorna(utenteLoggato);
 	}
 
+	/*
+	 * RICERCA (ricerca solo i tavoli in cui esperienza minima <= esperienza
+	 * accumulata).
+	 */
 	@GetMapping("/findtavoli")
 	public List<TavoloDTO> findTavoli() {
 		Utente utenteLoggato = utenteService
@@ -83,6 +105,10 @@ public class PlayController {
 		return TavoloDTO.createTavoloDTOListFromModelList(listaTavoli, false);
 	}
 
+	/*
+	 * GIOCA PARTITA A DETERMINATO TAVOLO inviato come input ovviamente (Gestire a
+	 * piacere il caso credito < cifra minima)
+	 */
 	@GetMapping("/startgame/{idtavolo}")
 	@ResponseStatus(HttpStatus.OK)
 	public void startGame(@PathVariable(value = "idtavolo", required = true) long idtavolo) {

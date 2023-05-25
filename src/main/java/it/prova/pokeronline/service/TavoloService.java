@@ -6,7 +6,9 @@ import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 
 public interface TavoloService {
-
+	
+	//CRUD
+	
 	List<Tavolo> listAllElements(boolean eager);
 
 	Tavolo caricaSingoloElemento(Long id);
@@ -18,6 +20,8 @@ public interface TavoloService {
 	Tavolo inserisciNuovo(Tavolo tavoloInstance);
 
 	void rimuovi(Long id);
+	
+	// FIND
 
 	List<Tavolo> findAllSpecialPlayer(String name);
 
@@ -28,5 +32,8 @@ public interface TavoloService {
 	List<Tavolo> findEsperienzaMinima(Integer esperienzaAccumulata);
 
 	Tavolo findLastGame(Utente utenteLoggato);
+
+	
+	
 
 }
