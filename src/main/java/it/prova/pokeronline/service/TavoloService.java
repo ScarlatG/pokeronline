@@ -2,13 +2,14 @@ package it.prova.pokeronline.service;
 
 import java.util.List;
 
+import it.prova.pokeronline.dto.TavoloDTO;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 
 public interface TavoloService {
-	
-	//CRUD
-	
+
+	// CRUD
+
 	List<Tavolo> listAllElements(boolean eager);
 
 	Tavolo caricaSingoloElemento(Long id);
@@ -20,7 +21,7 @@ public interface TavoloService {
 	Tavolo inserisciNuovo(Tavolo tavoloInstance);
 
 	void rimuovi(Long id);
-	
+
 	// FIND
 
 	List<Tavolo> findAllSpecialPlayer(String name);
@@ -33,7 +34,6 @@ public interface TavoloService {
 
 	Tavolo findLastGame(Utente utenteLoggato);
 
-	
-	
+	public List<TavoloDTO> listaTavoliConSogliaEsperienzaGiocatore(Integer soglia);
 
 }

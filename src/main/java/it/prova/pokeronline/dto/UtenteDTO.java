@@ -2,7 +2,6 @@ package it.prova.pokeronline.dto;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,12 +9,9 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-
 import it.prova.pokeronline.model.Ruolo;
 import it.prova.pokeronline.model.StatoUtente;
 import it.prova.pokeronline.model.Utente;
-
-
 
 public class UtenteDTO {
 
@@ -40,12 +36,12 @@ public class UtenteDTO {
 	private LocalDate dataRegistrazione;
 
 	private StatoUtente stato;
-	
+
 	private Integer esperienzaAccumulata;
-	
+
 	private Integer creditoAccumulato;
-	
-	//Relations
+
+	// Relations
 
 	private Long[] ruoliIds;
 
@@ -61,15 +57,8 @@ public class UtenteDTO {
 		this.stato = stato;
 	}
 
-	public UtenteDTO(Long id,
-			String username,
-			String password,
-			String nome,
-			String cognome, 
-			LocalDate dataRegistrazione, 
-			StatoUtente stato,
-			Integer esperienzaAccumulata, 
-			Integer creditoAccumulato) {
+	public UtenteDTO(Long id, String username, String password, String nome, String cognome,
+			LocalDate dataRegistrazione, StatoUtente stato, Integer esperienzaAccumulata, Integer creditoAccumulato) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -81,15 +70,9 @@ public class UtenteDTO {
 		this.esperienzaAccumulata = esperienzaAccumulata;
 		this.creditoAccumulato = creditoAccumulato;
 	}
-	
-	public UtenteDTO(Long id,
-			String username,
-			String nome,
-			String cognome, 
-			LocalDate dataRegistrazione, 
-			StatoUtente stato,
-			Integer esperienzaAccumulata, 
-			Integer creditoAccumulato) {
+
+	public UtenteDTO(Long id, String username, String nome, String cognome, LocalDate dataRegistrazione,
+			StatoUtente stato, Integer esperienzaAccumulata, Integer creditoAccumulato) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -141,7 +124,6 @@ public class UtenteDTO {
 		this.cognome = cognome;
 	}
 
-
 	public LocalDate getDataRegistrazione() {
 		return dataRegistrazione;
 	}
@@ -175,16 +157,8 @@ public class UtenteDTO {
 	}
 
 	public Utente buildUtenteModel(boolean includeIdRoles) {
-		Utente result = new Utente(
-				this.id, 
-				this.username, 
-				this.password, 
-				this.nome, 
-				this.cognome,
-				this.dataRegistrazione,
-				this.stato, 
-				this.creditoAccumulato, 
-				this.esperienzaAccumulata);
+		Utente result = new Utente(this.id, this.username, this.password, this.nome, this.cognome,
+				this.dataRegistrazione, this.stato, this.creditoAccumulato, this.esperienzaAccumulata);
 		if (includeIdRoles && ruoliIds != null)
 			result.setRuoli(Arrays.asList(ruoliIds).stream().map(id -> new Ruolo(id)).collect(Collectors.toSet()));
 
@@ -192,16 +166,9 @@ public class UtenteDTO {
 	}
 
 	public static UtenteDTO buildUtenteDTOFromModel(Utente utenteModel) {
-		UtenteDTO result = new UtenteDTO(
-				utenteModel.getId(), 
-				utenteModel.getUsername(), 
-				utenteModel.getPassword(),
-				utenteModel.getNome(), 
-				utenteModel.getCognome(), 
-				utenteModel.getDataRegistrazione(),
-				utenteModel.getStato(), 
-				utenteModel.getEsperienzaAccumulata(), 
-				utenteModel.getCreditoAccumulato());
+		UtenteDTO result = new UtenteDTO(utenteModel.getId(), utenteModel.getUsername(), utenteModel.getPassword(),
+				utenteModel.getNome(), utenteModel.getCognome(), utenteModel.getDataRegistrazione(),
+				utenteModel.getStato(), utenteModel.getEsperienzaAccumulata(), utenteModel.getCreditoAccumulato());
 
 		if (!utenteModel.getRuoli().isEmpty())
 			result.ruoliIds = utenteModel.getRuoli().stream().map(r -> r.getId()).collect(Collectors.toList())
@@ -211,15 +178,9 @@ public class UtenteDTO {
 	}
 
 	public static UtenteDTO buildUtenteDTOFromModelNoPassword(Utente utenteModel) {
-		UtenteDTO result = new UtenteDTO(
-				utenteModel.getId(), 
-				utenteModel.getUsername(), 
-				utenteModel.getNome(),
-				utenteModel.getCognome(), 
-				utenteModel.getDataRegistrazione(), 
-				utenteModel.getStato(),
-				utenteModel.getEsperienzaAccumulata(), 
-				utenteModel.getCreditoAccumulato());
+		UtenteDTO result = new UtenteDTO(utenteModel.getId(), utenteModel.getUsername(), utenteModel.getNome(),
+				utenteModel.getCognome(), utenteModel.getDataRegistrazione(), utenteModel.getStato(),
+				utenteModel.getEsperienzaAccumulata(), utenteModel.getCreditoAccumulato());
 
 		if (!utenteModel.getRuoli().isEmpty())
 			result.ruoliIds = utenteModel.getRuoli().stream().map(r -> r.getId()).collect(Collectors.toList())
@@ -236,7 +197,5 @@ public class UtenteDTO {
 		return (Set<UtenteDTO>) modelList.stream().map(entity -> UtenteDTO.buildUtenteDTOFromModelNoPassword(entity))
 				.collect(Collectors.toSet());
 	}
-	
-	
 
 }

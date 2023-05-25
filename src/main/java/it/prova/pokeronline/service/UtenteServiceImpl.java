@@ -9,15 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.pokeronline.model.StatoUtente;
-import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
-import it.prova.pokeronline.repository.tavolo.TavoloRepository;
 import it.prova.pokeronline.repository.utente.UtenteRepository;
 
 @Service
 @Transactional(readOnly = true)
 public class UtenteServiceImpl implements UtenteService {
-	
+
 	@Autowired
 	private UtenteRepository repository;
 
@@ -71,7 +69,7 @@ public class UtenteServiceImpl implements UtenteService {
 	public Utente findByUsername(String username) {
 		return repository.findByUsername(username).orElse(null);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<Utente> findByExample(Utente example) {
 		return listAllUtenti();
@@ -94,9 +92,9 @@ public class UtenteServiceImpl implements UtenteService {
 			utenteInstance.setStato(StatoUtente.DISABILITATO);
 		else if (utenteInstance.getStato().equals(StatoUtente.DISABILITATO))
 			utenteInstance.setStato(StatoUtente.ATTIVO);
-		
+
 		repository.save(utenteInstance);
-		
+
 	}
 
 	@Transactional
@@ -105,9 +103,9 @@ public class UtenteServiceImpl implements UtenteService {
 		repository.save(utenteLoggato);
 
 	}
-	
+
 	public static int game() {
-		
+
 		Double segno = Math.random();
 		Double somma = 0.0;
 		if (segno >= 0.5)
@@ -115,8 +113,7 @@ public class UtenteServiceImpl implements UtenteService {
 		else
 			somma = Math.random() * -1000;
 		return (int) (segno * somma.intValue());
-		
-	}
 
+	}
 
 }

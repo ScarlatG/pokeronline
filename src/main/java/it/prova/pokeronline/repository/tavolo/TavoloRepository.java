@@ -5,10 +5,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import it.prova.pokeronline.model.Tavolo;
 
-public interface TavoloRepository extends CrudRepository<Tavolo, Long>, CustomTavoloRepository {
+public interface TavoloRepository extends CrudRepository<Tavolo, Long> {
 
 	@Query("select t from Tavolo t left join fetch t.utenteCreazione left join fetch t.giocatori")
 	List<Tavolo> findAllEager();
@@ -27,5 +28,11 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long>, CustomTa
 	Optional<Tavolo> findByIdSpecialPlayer(Long idTavolo, Long idUtente);
 
 	List<Tavolo> findByEsperienzaMinimaLessThan(Integer esperienzaAccumulata);
+
+	@Query(value = "select t.* from tavolo t " + "where t.utente_id = :idInSessione and exists"
+			+ "(select * from tavolo_giocatori p inner join utente u " + "on p.giocatori_id = u.id where "
+			+ "p.tavolo_id = t.id and u.esperienzaaccumulata >= :soglia)", nativeQuery = true)
+	List<Tavolo> estraiTavoliConAlmenoUnUtenteAlDiSopraDiSoglia(@Param("idInSessione") Long idInSessione,
+			@Param("soglia") Integer soglia);
 
 }

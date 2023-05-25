@@ -1,10 +1,12 @@
 package it.prova.pokeronline.web.api;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
 
 import it.prova.pokeronline.dto.TavoloDTO;
 import it.prova.pokeronline.dto.UtenteDTO;
@@ -28,6 +29,7 @@ import it.prova.pokeronline.web.api.exception.IdNotNullForInsertException;
 import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 import it.prova.pokeronline.web.api.exception.UtenteCreazioneNotNullForInsertException;
 import it.prova.pokeronline.web.api.exception.UtenteCreazioneNotValidException;
+import it.prova.pokeronline.web.api.exception.ValoreEsperienzaException;
 
 @RestController
 @RequestMapping("/api/tavolo")
@@ -140,6 +142,17 @@ public class TavoloController {
 			throw new GiocatoriPresentiException(
 					"Impossibile eliminare questo Tavolo, sono ancora presenti dei giocatori al suo interno");
 		tavoloService.rimuovi(id);
+	}
+
+	@GetMapping("/specialGuest/listaTavoliConGiocatoreConSogliaEsperienza")
+	public List<TavoloDTO> listaTavoliConGiocatoreConSogliaEsperienza(
+			@Valid @RequestBody Map<String, Integer> rawValue) {
+
+		if (rawValue.get("sogliaMinima") == null || rawValue.get("sogliaMinima") <= 0)
+			throw new ValoreEsperienzaException("Inserire una cifra maggiore di 0");
+
+		return tavoloService.listaTavoliConSogliaEsperienzaGiocatore(rawValue.get("sogliaMinima"));
+
 	}
 
 }

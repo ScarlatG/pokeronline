@@ -3,30 +3,29 @@ package it.prova.pokeronline.service;
 import java.time.LocalDate;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.prova.pokeronline.model.Ruolo;
+import it.prova.pokeronline.dto.TavoloDTO;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.repository.tavolo.TavoloRepository;
 import it.prova.pokeronline.repository.utente.UtenteRepository;
-import it.prova.pokeronline.web.api.exception.GiocatoriPresentiException;
-import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 
 @Service
 public class TavoloServiceImpl implements TavoloService {
-	
+
 	@Autowired
 	private TavoloRepository repository;
 
 	@Autowired
 	private UtenteRepository utenteRepository;
 
-	
+	@Autowired
+	private UtenteService utenteService;
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Tavolo> listAllElements(boolean eager) {
@@ -35,7 +34,7 @@ public class TavoloServiceImpl implements TavoloService {
 		return (List<Tavolo>) repository.findAll();
 
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Tavolo> findAllSpecialPlayer(String name) {
@@ -48,29 +47,26 @@ public class TavoloServiceImpl implements TavoloService {
 	public Tavolo caricaSingoloElemento(Long id) {
 		return repository.findById(id).orElse(null);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
-	public Tavolo caricaSingoloElementoSpecialPlayer(Long idTavolo,Long idUtente) {
+	public Tavolo caricaSingoloElementoSpecialPlayer(Long idTavolo, Long idUtente) {
 		return repository.findByIdSpecialPlayer(idTavolo, idUtente).orElse(null);
 	}
-	
-	
 
 	@Override
 	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloElementoEager(Long id) {
 		return repository.findByIdEager(id);
 	}
-	
-	//Aggiornamento possibile solo se non ci sono giocatori
+
+	// Aggiornamento possibile solo se non ci sono giocatori
 	@Override
 	@Transactional
 	public Tavolo aggiorna(Tavolo tavoloInstance) {
 		return repository.save(tavoloInstance);
 	}
-	
-	
+
 	@Override
 	@Transactional
 	public Tavolo inserisciNuovo(Tavolo tavoloInstance) {
@@ -80,7 +76,7 @@ public class TavoloServiceImpl implements TavoloService {
 		return repository.save(tavoloInstance);
 	}
 
-	//Eliminazione possibile solo se non ci sono giocatori
+	// Eliminazione possibile solo se non ci sono giocatori
 	@Override
 	@Transactional
 	public void rimuovi(Long id) {
@@ -108,6 +104,15 @@ public class TavoloServiceImpl implements TavoloService {
 		return repository.findByGiocatori_id(utenteLoggato.getId()).orElse(null);
 	}
 
-	
+	@Override
+	@Transactional(readOnly = true)
+	public List<TavoloDTO> listaTavoliConSogliaEsperienzaGiocatore(Integer soglia) {
+
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Utente utenteInSessione = utenteService.findByUsername(username);
+
+		return TavoloDTO.createTavoloDTOListFromModelList(
+				repository.estraiTavoliConAlmenoUnUtenteAlDiSopraDiSoglia(utenteInSessione.getId(), soglia), true);
+	}
 
 }
