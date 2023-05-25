@@ -87,9 +87,9 @@ public class TavoloServiceImpl implements TavoloService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Tavolo> findEsperienzaMinima(Integer esperienzaAccumulata) {
+	public List<Tavolo> findEsperienzaMassima(Integer esperienzaAccumulata) {
 		// TODO Auto-generated method stub
-		return repository.findByEsperienzaMinimaLessThan(esperienzaAccumulata);
+		return repository.findByEsperienzaMassimaMoreThan(esperienzaAccumulata);
 	}
 
 	@Override

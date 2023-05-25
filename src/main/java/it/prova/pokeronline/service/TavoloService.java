@@ -25,7 +25,7 @@ public interface TavoloService {
 
 	Tavolo findByDenominazione(String string);
 
-	List<Tavolo> findEsperienzaMinima(Integer esperienzaAccumulata);
+	List<Tavolo> findEsperienzaMassima(Integer esperienzaAccumulata);
 
 	Tavolo findLastGame(Utente utenteLoggato);
 
