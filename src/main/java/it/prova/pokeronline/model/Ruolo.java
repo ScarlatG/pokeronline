@@ -25,18 +25,15 @@ public class Ruolo {
 	private String codice;
 
 	public Ruolo() {
-		super();
-	}
-
-	public Ruolo(String descrizione, String codice) {
-		super();
-		this.descrizione = descrizione;
-		this.codice = codice;
 	}
 
 	public Ruolo(Long id) {
-		super();
 		this.id = id;
+	}
+
+	public Ruolo(String descrizione, String codice) {
+		this.descrizione = descrizione;
+		this.codice = codice;
 	}
 
 	public Long getId() {
@@ -62,5 +59,4 @@ public class Ruolo {
 	public void setCodice(String codice) {
 		this.codice = codice;
 	}
-
 }

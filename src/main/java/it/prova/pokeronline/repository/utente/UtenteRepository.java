@@ -10,6 +10,7 @@ import it.prova.pokeronline.model.StatoUtente;
 import it.prova.pokeronline.model.Utente;
 
 public interface UtenteRepository extends CrudRepository<Utente, Long> {
+	
 
 	@EntityGraph(attributePaths = { "ruoli" })
 	Optional<Utente> findByUsername(String username);
@@ -22,6 +23,6 @@ public interface UtenteRepository extends CrudRepository<Utente, Long> {
 	@EntityGraph(attributePaths = { "ruoli" })
 	Utente findByUsernameAndPasswordAndStato(String username, String password, StatoUtente stato);
 
-	@Query(value = "update Utente set creditoaccumulato += ?1 where id = ?2", nativeQuery = true)
+	@Query(value= "update Utente set creditoaccumulato += ?1 where id = ?2", nativeQuery = true)
 	Integer compraCredito(Integer credito, Long id);
 }

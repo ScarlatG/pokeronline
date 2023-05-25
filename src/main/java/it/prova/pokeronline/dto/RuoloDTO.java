@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import it.prova.pokeronline.model.Ruolo;
 
+
 public class RuoloDTO {
 
 	private Long id;

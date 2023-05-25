@@ -12,24 +12,24 @@ import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 
 public class TavoloDTO {
-
+	
 	private Long id;
-
+	
 	@NotBlank(message = "{esperienzaminima.notblank}")
 	private Integer esperienzaMinima;
-
+	
 	@NotBlank(message = "{ciframinima.notblank}")
 	private Integer cifraMinima;
-
+	
 	@NotBlank(message = "{denominazione.notblank}")
 	private String denominazione;
-
+	
 	private LocalDate dateCreated;
-
-	// Connection
+	
+	// Connection 
 	private Set<UtenteDTO> giocatoriDTO = new HashSet<UtenteDTO>(0);
 	private UtenteDTO utenteDTOCreazione;
-
+	
 	public TavoloDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -96,6 +96,8 @@ public class TavoloDTO {
 		this.dateCreated = dateCreated;
 	}
 
+	
+
 	public Set<UtenteDTO> getGiocatoriDTO() {
 		return giocatoriDTO;
 	}
@@ -111,19 +113,18 @@ public class TavoloDTO {
 	public void setUtenteDTOCreazione(UtenteDTO utenteDTOCreazione) {
 		this.utenteDTOCreazione = utenteDTOCreazione;
 	}
-
+	
 	public Tavolo buildTavoloModel() {
-		Tavolo result = new Tavolo(this.id, this.esperienzaMinima, this.cifraMinima, this.denominazione,
-				this.dateCreated);
-
-		if (this.giocatoriDTO.size() > 1) {
+		Tavolo result = new Tavolo(this.id, this.esperienzaMinima, this.cifraMinima, this.denominazione, this.dateCreated);
+		
+		if(this.giocatoriDTO.size() > 1) {
 			Set<Utente> set = result.getGiocatori();
 			this.giocatoriDTO.forEach(utente -> set.add(utente.buildUtenteModel(false)));
 		}
-
-		if (this.utenteDTOCreazione != null)
+		
+		if(this.utenteDTOCreazione != null)
 			result.setUtenteCreazione(this.utenteDTOCreazione.buildUtenteModel(false));
-
+			
 		return result;
 	}
 
@@ -143,7 +144,7 @@ public class TavoloDTO {
 
 		return result;
 	}
-
+	
 	public static TavoloDTO buildTavoloDTOFromModelNoPassword(Tavolo tavoloModel, boolean includeGiocatori) {
 
 		TavoloDTO result = new TavoloDTO(tavoloModel.getId(), tavoloModel.getEsperienzaMinima(),
@@ -172,5 +173,11 @@ public class TavoloDTO {
 			return result;
 		}).collect(Collectors.toList());
 	}
+	
+	
+	
+	
+	
+	
 
 }

@@ -18,31 +18,32 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tavolo")
 public class Tavolo {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-
+	
 	@Column(name = "esperienzaminima")
 	private Integer esperienzaMinima;
-
+	
 	@Column(name = "ciframinima")
 	private Integer cifraMinima;
-
+	
 	@Column(name = "denominazione")
 	private String denominazione;
-
+	
 	@Column(name = "datecreated")
 	private LocalDate dateCreated;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Utente> giocatori = new HashSet<Utente>(0);
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "utente_id", referencedColumnName = "id", nullable = false)
-	private Utente utenteCreazione;
-
+	private Utente utenteCreazione; 
+	
+	
 	public Tavolo() {
 		// TODO Auto-generated constructor stub
 	}
@@ -56,7 +57,7 @@ public class Tavolo {
 		this.denominazione = denominazione;
 		this.utenteCreazione = utenteCreazione;
 	}
-
+	
 	public Tavolo(Long id, Integer esperienzaMinima, Integer cifraMinima, String denominazione, LocalDate dateCreated) {
 		super();
 		this.id = id;
@@ -65,9 +66,8 @@ public class Tavolo {
 		this.denominazione = denominazione;
 		this.dateCreated = dateCreated;
 	}
-
-	public Tavolo(Long id, Integer esperienzaMinima, Integer cifraMinima, String denominazione, LocalDate dateCreated,
-			Utente utenteCreazione) {
+	
+	public Tavolo(Long id, Integer esperienzaMinima, Integer cifraMinima, String denominazione, LocalDate dateCreated, Utente utenteCreazione) {
 		super();
 		this.id = id;
 		this.esperienzaMinima = esperienzaMinima;
@@ -76,9 +76,8 @@ public class Tavolo {
 		this.dateCreated = dateCreated;
 		this.utenteCreazione = utenteCreazione;
 	}
-
-	public Tavolo(Integer esperienzaMinima, Integer cifraMinima, String denominazione, LocalDate dateCreated,
-			Utente utenteCreazione) {
+	
+	public Tavolo(Integer esperienzaMinima, Integer cifraMinima, String denominazione, LocalDate dateCreated, Utente utenteCreazione) {
 		super();
 		this.esperienzaMinima = esperienzaMinima;
 		this.cifraMinima = cifraMinima;
@@ -127,6 +126,7 @@ public class Tavolo {
 		this.dateCreated = dateCreated;
 	}
 
+	
 	public Set<Utente> getGiocatori() {
 		return giocatori;
 	}
@@ -142,5 +142,9 @@ public class Tavolo {
 	public void setUtenteCreazione(Utente utenteCreazione) {
 		this.utenteCreazione = utenteCreazione;
 	}
+	
+	
+	
+	
 
 }

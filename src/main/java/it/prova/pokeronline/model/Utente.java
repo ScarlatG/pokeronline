@@ -24,28 +24,40 @@ public class Utente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
+
 	@Column(name = "username")
 	private String username;
+
 	@Column(name = "password")
 	private String password;
 	@Column(name = "nome")
 	private String nome;
 	@Column(name = "cognome")
 	private String cognome;
-	@Column(name = "dataRegistrazione")
-	private LocalDate dataRegistrazione;
-	@Column(name = "esperienzaAccumulata")
-	private Integer esperienzaAccumulata;
-	@Column(name = "creditoAccumulato")
-	private Integer creditoAccumulato;
 
-	// se non uso questa annotation viene gestito come un intero
+	@Column(name = "dataregistrazione")
+	private LocalDate dataRegistrazione;
+
 	@Enumerated(EnumType.STRING)
 	private StatoUtente stato;
+
+	@Column(name = "esperienzaaccumulata")
+	private Integer esperienzaAccumulata;
+
+	@Column(name = "creditoaccumulato")
+	private Integer creditoAccumulato;
 
 	@ManyToMany
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
 	private Set<Ruolo> ruoli = new HashSet<>(0);
+
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "tavolo_id")
+//	private Tavolo tavolo; 
+
+	// Non ci interessa dato un Utente quali tavoli ha creato
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "utenteCreazione")
+//	private Set<Tavolo> tavoliCreati = new HashSet<Tavolo>(0);
 
 	public Utente() {
 	}
@@ -133,6 +145,22 @@ public class Utente {
 		this.dataRegistrazione = dataRegistrazione;
 	}
 
+//	public Tavolo getTavolo() {
+//		return tavolo;
+//	}
+//
+//	public void setTavolo(Tavolo tavolo) {
+//		this.tavolo = tavolo;
+//	}
+
+//	public Set<Tavolo> getTavoliCreati() {
+//		return tavoliCreati;
+//	}
+//
+//	public void setTavoliCreati(Set<Tavolo> tavoliCreati) {
+//		this.tavoliCreati = tavoliCreati;
+//	}
+
 	public StatoUtente getStato() {
 		return stato;
 	}
@@ -188,4 +216,5 @@ public class Utente {
 	public boolean isDisabilitato() {
 		return this.stato != null && this.stato.equals(StatoUtente.DISABILITATO);
 	}
+
 }
